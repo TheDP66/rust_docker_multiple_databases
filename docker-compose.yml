@@ -1,0 +1,23 @@
+name: multi-db
+
+services:
+  postgres:
+    container_name: multi-db-postgresql
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_MULTIPLE_DATABASES: codein,iekimtie,wkawan
+    image: postgres:15.3-alpine
+    networks:
+      - multi-db-network
+    ports:
+      - 6504:5432
+    volumes:
+      - multi-db-postgres-volume:/var/lib/postgresql/data
+      - ./create-multiple-databases.sh:/docker-entrypoint-initdb.d/create-multiple-databases.sh
+
+networks:
+  multi-db-network:
+
+volumes:
+  multi-db-postgres-volume:
